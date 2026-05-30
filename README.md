@@ -4,14 +4,18 @@ Un **module de musique synthétiseur** tactile, esthétique **Tron / filaire né
 
 ## Concept
 - Fond noir + champ d'**étoiles 3D** minuscules qui avancent lentement face à l'écran (petits pixels).
-- Par-dessus, plusieurs **formes géométriques filaires** flottent sur un plan fixe et tournent en 3D.
+- Par-dessus, des **formes géométriques filaires** flottent sur un plan fixe et tournent en 3D.
+- **Carrousel de 5 planches × 8 formes = 40 instruments**, chacun indépendant. **Glisse** ◄ ► pour changer de planche.
 - **Tape une forme** → elle lance une **boucle chiptune synchronisée sur 8 temps**. **Re-tape** → elle s'arrête.
-- Chaque forme = un instrument différent, mais **toutes calées sur la même horloge** : on superpose et on enlève les couches comme on veut.
-- Familles de sons : **beats** (kick, snare, hi-hat), **basse**, **arpège / lead / stab chiptune**, **nappe synthétique**.
-- À chaque émission, la forme propage des **ondes colorées** et des **explosions de pixels fins** → expérience visuelle colorée et fun.
+- Toutes les formes (même sur des planches différentes) sont **calées sur la même horloge** : on superpose les couches comme on veut, les boucles continuent quand on change de planche.
+- Chaque planche a sa **palette, ses formes et son caractère sonore** :
+  - **ORIGIN** (vert) · **ICE** (cyan, aigu, cristallin) · **ACID** (magenta, saw mordant) · **SUNSET** (chaud) · **DEEP** (violet, sub, sombre)
+- Familles de sons par planche : **beats** (kick/snare/hi-hat), **basse**, **arpège / lead / stab**, **nappe**.
+- À chaque émission : **ondes colorées** + **explosions de pixels fins**.
 
 ## Utilisation
-- Tape les formes pour activer/désactiver leurs boucles.
+- **Tape** une forme pour activer/désactiver sa boucle.
+- **Glisse** horizontalement (ou flèches ◄ ►) pour naviguer entre les 5 planches.
 - Bouton **♪** (haut-droite) : couper / remettre le son.
 - 100 % tactile, optimisé mobile.
 
