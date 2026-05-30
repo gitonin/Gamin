@@ -1,0 +1,68 @@
+/* ===== NEON SYNTH MODULE — identité Tron filaire néon ===== */
+:root{
+  --neon:#00ff66;
+  --neon-glow:0 0 4px #00ff66, 0 0 12px #00ff66, 0 0 24px #00aa44;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+html,body{
+  width:100%;height:100%;
+  background:#000;
+  overflow:hidden;
+  font-family:"Courier New",monospace;
+  color:var(--neon);
+  touch-action:none;
+  user-select:none;-webkit-user-select:none;
+}
+
+#game{
+  display:block;position:absolute;top:0;left:0;
+  width:100%;height:100%;
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+}
+
+/* ===== Titre ===== */
+#title{
+  position:absolute;z-index:20;
+  top:calc(env(safe-area-inset-top) + 14px);
+  left:18px;
+  font-size:20px;letter-spacing:4px;font-weight:bold;
+  color:var(--neon);
+  text-shadow:var(--neon-glow);
+}
+
+/* ===== Bouton son ===== */
+#mute{
+  position:absolute;z-index:30;
+  top:calc(env(safe-area-inset-top) + 10px);
+  right:14px;
+  width:44px;height:44px;
+  background:rgba(0,255,102,0.06);
+  border:2px solid var(--neon);
+  border-radius:10px;
+  color:var(--neon);
+  font-size:20px;line-height:1;
+  text-shadow:var(--neon-glow);
+  box-shadow:0 0 8px rgba(0,255,102,.4);
+}
+#mute.off{opacity:.4;}
+#mute:active{background:rgba(0,255,102,0.25);}
+
+/* ===== Aide ===== */
+#hint{
+  position:absolute;z-index:20;left:0;right:0;
+  bottom:calc(env(safe-area-inset-bottom) + 26px);
+  text-align:center;
+  font-size:14px;letter-spacing:2px;line-height:1.7;
+  color:rgba(0,255,102,0.85);
+  text-shadow:0 0 8px rgba(0,255,102,.6);
+  transition:opacity .6s;
+  pointer-events:none;
+  animation:blink 2s ease-in-out infinite;
+}
+#hint span{font-size:11px;opacity:.6;}
+#hint.gone{opacity:0;}
+
+@keyframes blink{0%,100%{opacity:.5;}50%{opacity:1;}}
