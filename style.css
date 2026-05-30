@@ -1,0 +1,115 @@
+/* ===== NEON WIREFRONT — style Tron old school ===== */
+:root{
+  --neon:#00ff66;
+  --neon-dim:#0a4f29;
+  --neon-glow:0 0 4px #00ff66, 0 0 12px #00ff66, 0 0 24px #00aa44;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+html,body{
+  width:100%;height:100%;
+  background:#000;
+  overflow:hidden;
+  font-family:"Courier New",monospace;
+  color:var(--neon);
+  touch-action:none;
+  user-select:none;-webkit-user-select:none;
+}
+
+#game{
+  display:block;
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  image-rendering:pixelated;     /* rendu pixel art */
+  image-rendering:crisp-edges;
+}
+
+.hidden{display:none !important;}
+
+/* ===== HUD ===== */
+#hud{
+  position:absolute;top:0;left:0;width:100%;
+  display:flex;justify-content:space-between;
+  padding:calc(env(safe-area-inset-top) + 12px) 18px 0;
+  font-size:18px;letter-spacing:2px;
+  text-shadow:var(--neon-glow);
+  pointer-events:none;z-index:10;
+}
+#lives{color:#00ff66;}
+
+/* ===== Commandes tactiles ===== */
+#controls{
+  position:absolute;left:0;bottom:0;width:100%;
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding:0 24px calc(env(safe-area-inset-bottom) + 24px);
+  z-index:10;pointer-events:none;
+}
+#pad{display:flex;gap:18px;pointer-events:auto;}
+
+.ctl{
+  width:74px;height:74px;
+  background:rgba(0,255,102,0.06);
+  border:2px solid var(--neon);
+  border-radius:14px;
+  color:var(--neon);
+  font-size:30px;line-height:1;
+  text-shadow:var(--neon-glow);
+  box-shadow:0 0 8px rgba(0,255,102,.5), inset 0 0 10px rgba(0,255,102,.15);
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:auto;
+  transition:transform .05s, background .05s;
+}
+.ctl:active{
+  background:rgba(0,255,102,0.28);
+  transform:scale(.92);
+}
+.ctl.fire{
+  width:92px;height:92px;border-radius:50%;
+  flex-direction:column;font-size:26px;
+}
+.ctl.fire span{font-size:11px;letter-spacing:2px;margin-top:2px;}
+
+/* ===== Overlays (Game Over) ===== */
+.overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.82);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:26px;z-index:20;text-align:center;
+}
+.overlay h1{
+  font-size:46px;letter-spacing:6px;
+  text-shadow:var(--neon-glow);
+}
+.overlay p{font-size:20px;letter-spacing:3px;opacity:.9;}
+
+.bigbtn{
+  margin-top:8px;
+  padding:16px 40px;
+  background:transparent;
+  border:2px solid var(--neon);
+  border-radius:10px;
+  color:var(--neon);
+  font-family:inherit;
+  font-size:22px;letter-spacing:4px;
+  text-shadow:var(--neon-glow);
+  box-shadow:0 0 10px rgba(0,255,102,.6), inset 0 0 14px rgba(0,255,102,.12);
+  animation:pulse 1.4s ease-in-out infinite;
+}
+.bigbtn:active{background:rgba(0,255,102,0.25);}
+
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 10px rgba(0,255,102,.6), inset 0 0 14px rgba(0,255,102,.12);}
+  50%{box-shadow:0 0 22px rgba(0,255,102,.95), inset 0 0 20px rgba(0,255,102,.3);}
+}
+
+.glitch{animation:glitch .6s steps(2) infinite;}
+@keyframes glitch{
+  0%{transform:translate(0,0);}
+  25%{transform:translate(-2px,1px);}
+  50%{transform:translate(2px,-1px);}
+  75%{transform:translate(-1px,-1px);}
+  100%{transform:translate(0,0);}
+}
