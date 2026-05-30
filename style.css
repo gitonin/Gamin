@@ -28,11 +28,28 @@ html,body{
 
 .hidden{display:none !important;}
 
+/* ===== Bouton son ===== */
+#mute{
+  position:absolute;z-index:30;
+  top:calc(env(safe-area-inset-top) + 10px);
+  right:14px;
+  width:44px;height:44px;
+  background:rgba(0,255,102,0.06);
+  border:2px solid var(--neon);
+  border-radius:10px;
+  color:var(--neon);
+  font-size:20px;line-height:1;
+  text-shadow:var(--neon-glow);
+  box-shadow:0 0 8px rgba(0,255,102,.4);
+}
+#mute.off{opacity:.4;}
+#mute:active{background:rgba(0,255,102,0.25);}
+
 /* ===== HUD ===== */
 #hud{
   position:absolute;top:0;left:0;width:100%;
   display:flex;justify-content:space-between;
-  padding:calc(env(safe-area-inset-top) + 12px) 18px 0;
+  padding:calc(env(safe-area-inset-top) + 16px) 70px 0 18px;
   font-size:18px;letter-spacing:2px;
   text-shadow:var(--neon-glow);
   pointer-events:none;z-index:10;

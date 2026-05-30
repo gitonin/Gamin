@@ -176,6 +176,16 @@ canvas.addEventListener('pointerdown', () => { if(state===STATE.HOME) startGame(
 // Boutons écrans
 document.getElementById('retry').addEventListener('click', startGame);
 
+// Bouton son (mute / unmute)
+const muteBtn = document.getElementById('mute');
+muteBtn.addEventListener('click', e=>{
+  e.stopPropagation();
+  Chip.init();
+  const m = Chip.toggleMute();
+  muteBtn.textContent = m ? '✕' : '♪';
+  muteBtn.classList.toggle('off', m);
+});
+
 // ============================================================
 //  GESTION DES ÉCRANS
 // ============================================================
@@ -184,6 +194,9 @@ const controls = document.getElementById('controls');
 const overGO   = document.getElementById('gameover');
 
 function startGame(){
+  Chip.init();
+  Chip.uiStart();
+  Chip.startMusic();
   state = STATE.PLAY;
   game.score=0; game.lives=3;
   game.playerX=0; game.playerVX=0;
@@ -199,6 +212,7 @@ function startGame(){
 }
 
 function gameOver(){
+  Chip.stopMusic();
   state = STATE.OVER;
   hud.classList.add('hidden');
   controls.classList.add('hidden');
@@ -216,6 +230,7 @@ function updateHUD(){
 // ============================================================
 function fire(){
   game.bullets.push({ x:game.playerX, y:PLAYER_Y+0.2, z:PLAYER_Z+1.5 });
+  Chip.shoot();
 }
 function explode(x,y,z,color){
   for(let i=0;i<14;i++){
@@ -311,6 +326,7 @@ function update(dt){
          Math.abs(b.x-e.x)<0.9+e.scale &&
          Math.abs(b.y-e.y)<0.9+e.scale){
         explode(e.x,e.y,e.z,NEON);
+        Chip.explosion();
         game.enemies.splice(j,1);
         game.bullets.splice(i,1);
         game.score += 10;
@@ -335,6 +351,7 @@ function update(dt){
 function hitPlayer(){
   game.lives--;
   game.shake=0.4; game.flash=1;
+  Chip.hit();
   updateHUD();
   if(game.lives<=0) gameOver();
 }
