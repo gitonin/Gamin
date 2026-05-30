@@ -50,12 +50,42 @@ html,body{
 #mute.off{opacity:.4;}
 #mute:active{background:rgba(0,255,102,0.25);}
 
-/* ===== Aide ===== */
+/* ===== Slider de tempo ===== */
+#tempo{
+  position:absolute;z-index:25;left:50%;transform:translateX(-50%);
+  bottom:calc(env(safe-area-inset-bottom) + 52px);
+  width:min(78%,340px);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+#tempoLabel{
+  font-size:12px;letter-spacing:3px;
+  color:var(--neon);text-shadow:0 0 6px rgba(0,255,102,.6);
+}
+#tempoSlider{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:4px;border-radius:2px;
+  background:rgba(0,255,102,0.25);
+  box-shadow:0 0 6px rgba(0,255,102,.4);
+  outline:none;
+}
+#tempoSlider::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:22px;height:22px;border-radius:50%;
+  background:#001a0c;border:2px solid var(--neon);
+  box-shadow:0 0 8px rgba(0,255,102,.8);cursor:pointer;
+}
+#tempoSlider::-moz-range-thumb{
+  width:22px;height:22px;border-radius:50%;
+  background:#001a0c;border:2px solid var(--neon);
+  box-shadow:0 0 8px rgba(0,255,102,.8);cursor:pointer;
+}
+
+/* ===== Aide (au-dessus du slider, ne chevauche plus les dots) ===== */
 #hint{
   position:absolute;z-index:20;left:0;right:0;
-  bottom:calc(env(safe-area-inset-bottom) + 26px);
+  bottom:calc(env(safe-area-inset-bottom) + 104px);
   text-align:center;
-  font-size:14px;letter-spacing:2px;line-height:1.7;
+  font-size:13px;letter-spacing:1.5px;line-height:1.7;
   color:rgba(0,255,102,0.85);
   text-shadow:0 0 8px rgba(0,255,102,.6);
   transition:opacity .6s;

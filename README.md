@@ -8,14 +8,18 @@ Un **module de musique synthétiseur** tactile, esthétique **Tron / filaire né
 - **Carrousel de 5 planches × 8 formes = 40 instruments**, chacun indépendant. **Glisse** ◄ ► pour changer de planche.
 - **Tape une forme** → elle lance une **boucle chiptune synchronisée sur 8 temps**. **Re-tape** → elle s'arrête.
 - Toutes les formes (même sur des planches différentes) sont **calées sur la même horloge** : on superpose les couches comme on veut, les boucles continuent quand on change de planche.
-- Chaque planche a sa **palette, ses formes et son caractère sonore** :
-  - **ORIGIN** (vert) · **ICE** (cyan, aigu, cristallin) · **ACID** (magenta, saw mordant) · **SUNSET** (chaud) · **DEEP** (violet, sub, sombre)
-- Familles de sons par planche : **beats** (kick/snare/hi-hat), **basse**, **arpège / lead / stab**, **nappe**.
+- Chaque planche a sa **propre gamme, progression d'accords, mélodies, palette et formes** → des ambiances radicalement différentes :
+  - **ORIGIN** — chiptune entraînant (La mineur)
+  - **ICE** — ambiant cristallin, sans batterie (Am9/maj7, cloches & nappes)
+  - **ACID** — techno acide, basse 303 glissée, kick four-on-the-floor
+  - **SUNSET** — lo-fi chaud & jazzy (Do majeur, Rhodes)
+  - **DEEP** — drone cinématique sombre (mode phrygien, sub-grave)
 - À chaque émission : **ondes colorées** + **explosions de pixels fins**.
 
 ## Utilisation
 - **Tape** une forme pour activer/désactiver sa boucle.
 - **Glisse** horizontalement (ou flèches ◄ ►) pour naviguer entre les 5 planches.
+- **Slider de tempo** (bas) : règle le BPM en temps réel (60–160), tout reste synchronisé.
 - Bouton **♪** (haut-droite) : couper / remettre le son.
 - 100 % tactile, optimisé mobile.
 

@@ -183,6 +183,14 @@ muteBtn.addEventListener('click',e=>{
   const m=Synth.toggleMute(); muteBtn.textContent=m?'✕':'♪'; muteBtn.classList.toggle('off',m);
 });
 
+// slider de tempo
+const tempoSlider=document.getElementById('tempoSlider');
+const tempoLabel=document.getElementById('tempoLabel');
+function applyTempo(){ const v=parseInt(tempoSlider.value,10); Synth.setBPM(v); tempoLabel.textContent='TEMPO '+v; }
+tempoSlider.addEventListener('input',applyTempo);
+tempoSlider.addEventListener('pointerdown',e=>e.stopPropagation());
+applyTempo();
+
 // ============================================================
 //  BOUCLE
 // ============================================================
@@ -257,8 +265,8 @@ function drawHUD(){
   ctx.fillText(`${si+1}/${NS}  ${Synth.slideName(si)}`, CX, Math.max(56, H*0.085));
   ctx.shadowBlur=0;
 
-  // points de navigation (bas)
-  const n=NS, gap=22, y=H-44-cssSafeBottom();
+  // points de navigation (tout en bas)
+  const n=NS, gap=22, y=H-22;
   const x0=CX-(n-1)*gap/2;
   for(let i=0;i<n;i++){
     const onv=(i===si);
@@ -266,15 +274,14 @@ function drawHUD(){
     ctx.fillStyle=onv?Synth.slideAccent(i):'rgba(255,255,255,0.3)';
     ctx.fill();
   }
-  // compteur de boucles actives
+  // compteur de boucles actives (haut gauche, sous le titre)
   const ac=Synth.activeCount();
   if(ac>0){
     ctx.textAlign='left'; ctx.font=`12px "Courier New",monospace`;
     ctx.fillStyle='rgba(0,255,102,0.7)';
-    ctx.fillText(`▶ ${ac} LOOP${ac>1?'S':''}`, 16, H-16-cssSafeBottom());
+    ctx.fillText(`▶ ${ac} LOOP${ac>1?'S':''}`, 18, Math.max(76, H*0.13));
   }
 }
-function cssSafeBottom(){ return 8; }
 
 function dim(hex,f){
   const n=parseInt(hex.slice(1),16);
