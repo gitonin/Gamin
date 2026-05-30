@@ -1,23 +1,26 @@
-# NEON WIREFRONT
+# NEON · SYNTH MODULE
 
-Shoot'em up **3D filaire** optimisé mobile — style **Tron old school** (fond noir, traits vert fluo, esthétique pixel art).
+Un **module de musique synthétiseur** tactile, esthétique **Tron / filaire néon** sur fond noir.
 
-## Le jeu
-- **Page d'accueil** : vaisseau en filaire 3D qui tourne sur lui-même, titre néon et bouton **START** (touchez l'écran pour lancer).
-- **En jeu** : votre vaisseau au premier plan avance dans un espace filaire minimal. Des ennemis aux **formes géométriques variées** (cube, tétraèdre, octaèdre, pyramide, diamant, prisme) foncent sur vous.
-- Esquivez-les et détruisez-les au tir pour marquer des points. La vitesse et la fréquence d'apparition augmentent avec le score.
+## Concept
+- Fond noir + champ d'**étoiles 3D** minuscules qui avancent lentement face à l'écran (petits pixels).
+- Par-dessus, plusieurs **formes géométriques filaires** flottent sur un plan fixe et tournent en 3D.
+- **Tape une forme** → elle lance une **boucle chiptune synchronisée sur 8 temps**. **Re-tape** → elle s'arrête.
+- Chaque forme = un instrument différent, mais **toutes calées sur la même horloge** : on superpose et on enlève les couches comme on veut.
+- Familles de sons : **beats** (kick, snare, hi-hat), **basse**, **arpège / lead / stab chiptune**, **nappe synthétique**.
+- À chaque émission, la forme propage des **ondes colorées** et des **explosions de pixels fins** → expérience visuelle colorée et fun.
 
-## Commandes (tactiles)
-- En bas **à gauche** : boutons **◄ / ►** pour se déplacer.
-- En bas **à droite** : bouton **▲ TIR** (maintenir = tir automatique).
-- Au clavier (desktop) : flèches gauche/droite + espace.
+## Utilisation
+- Tape les formes pour activer/désactiver leurs boucles.
+- Bouton **♪** (haut-droite) : couper / remettre le son.
+- 100 % tactile, optimisé mobile.
 
-## Lancer
-Aucune dépendance, aucun build. Ouvrez `index.html` dans un navigateur, ou servez le dossier :
+## Technique
+Canvas 2D + JavaScript vanilla. Audio entièrement synthétisé en temps réel (Web Audio API, séquenceur à anticipation pour un calage rythmique précis). Aucune dépendance, aucun fichier audio.
 
+## Lancer en local
 ```bash
-python3 -m http.server 8000
-# puis http://localhost:8000
+python3 -m http.server 8000   # puis http://localhost:8000
 ```
 
-Construit en Canvas 2D + JavaScript vanilla avec un moteur de rendu filaire maison (projection perspective).
+Déployé automatiquement sur **GitHub Pages** : https://gitonin.github.io/Gamin/

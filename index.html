@@ -6,36 +6,20 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#000000">
-<title>NEON WIREFRONT</title>
+<title>NEON SYNTH MODULE</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <canvas id="game"></canvas>
 
+<!-- Titre -->
+<div id="title">NEON · SYNTH</div>
+
 <!-- Bouton son -->
 <button id="mute">♪</button>
 
-<!-- HUD en jeu -->
-<div id="hud" class="hidden">
-  <div id="score">SCORE 0</div>
-  <div id="lives">♥♥♥</div>
-</div>
-
-<!-- Commandes tactiles -->
-<div id="controls" class="hidden">
-  <div id="pad">
-    <button class="ctl" id="left">◄</button>
-    <button class="ctl" id="right">►</button>
-  </div>
-  <button class="ctl fire" id="fire">▲<span>TIR</span></button>
-</div>
-
-<!-- Écran Game Over -->
-<div id="gameover" class="overlay hidden">
-  <h1 class="glitch">GAME OVER</h1>
-  <p id="finalScore">SCORE 0</p>
-  <button class="bigbtn" id="retry">REJOUER</button>
-</div>
+<!-- Aide (disparaît au premier tap) -->
+<div id="hint">TAPE LES FORMES POUR LANCER UNE BOUCLE<br><span>RE-TAPE POUR L'ARRÊTER</span></div>
 
 <script src="audio.js"></script>
 <script src="game.js"></script>
