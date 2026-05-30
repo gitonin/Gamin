@@ -235,6 +235,7 @@ const MP = {
   // fricatives
   's':FR(4000,6500,8000,0.12), 'f':FR(1200,2200,4000,0.11,0.45),
   'S':FR(1800,2600,3600,0.12), 'z':VF(300,4500,6000), 'Z':VF(250,2400,3400), 'v':VF(300,1200,2400),
+  'T':FR(1500,2500,4000,0.09,0.3), 'D':VF(300,1500,2600),  // th sourd / voisé (anglais)
   // plosives (gap + burst/corps)
   'p':[GAP(),BR(600,1200,2000)],   't':[GAP(),BR(3000,4500,6000,0.02)], 'k':[GAP(),BR(1500,2200,3000)],
   'b':[GAP(0.03),VS(300,900,2400)],'d':[GAP(0.03),VS(300,1700,2600)],   'g':[GAP(0.03),VS(300,1300,2300)],
@@ -244,16 +245,16 @@ const word = str => str.trim().split(/\s+/).flatMap(k => { const m=MP[k]; return
 
 const VOX_STEPS=[0,2,4,6,8,10,12,14];   // un mot par temps quand plusieurs actifs
 const VOX_COLORS=['#ffcf6b','#ffd87a','#ffc24d','#ffe08a','#ffb84d','#ffdd99','#ffca5e','#ffe6a8'];
-// 8 mots de DÉMO (à remplacer par ta liste) + leur transcription phonétique
+// 8 mots/phrases (anglais) + leur transcription phonétique
 const VOX_WORDS=[
-  {label:'BONJOUR',  ph:'b o~ Z u r',   pitch:118},
-  {label:'MAUPITI',  ph:'m o p i t i',  pitch:128},
-  {label:'DANGER',   ph:'d a~ Z e',     pitch:104},
-  {label:'MYSTERE',  ph:'m i s t E r',  pitch:122},
-  {label:'ECOUTE',   ph:'e k u t',      pitch:134},
-  {label:'ATTENTION',ph:'a t a~ s j o~',pitch:112},
-  {label:'VOILA',    ph:'v w a l a',    pitch:126},
-  {label:'MERCI',    ph:'m E r s i',    pitch:108},
+  {label:'YOU MAN',            ph:'j u m a n',             pitch:120},
+  {label:'DANCE TO THE RHYTHM',ph:'d a n s t u D @ r i D @ m', pitch:112},
+  {label:'DISCO',              ph:'d i s k o',             pitch:130},
+  {label:'OH YEAH',            ph:'o j E',                 pitch:124},
+  {label:'ROBOT',              ph:'r o b O t',             pitch:96},
+  {label:'WORK IT',            ph:'w 2 r k i t',           pitch:128},
+  {label:'BITCH',              ph:'b i t S',               pitch:140},
+  {label:'SEXY BOY',           ph:'s E k s i b O j',       pitch:108},
 ];
 
 const SLIDES = [
