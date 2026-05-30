@@ -52,6 +52,20 @@ function init(){
   leadBus = ctx.createGain(); leadBus.gain.value = 1;
   leadBus.connect(master);
   leadBus.connect(delay);
+
+  unlock();   // déverrouille l'audio mobile (iOS démarre en 'suspended')
+}
+
+// Déverrouillage autoplay : resume() + court buffer silencieux,
+// le tout dans le geste tactile qui appelle init().
+function unlock(){
+  if (!ctx) return;
+  if (ctx.state === 'suspended') ctx.resume();
+  try {
+    const b = ctx.createBuffer(1, 1, ctx.sampleRate);
+    const src = ctx.createBufferSource();
+    src.buffer = b; src.connect(ctx.destination); src.start(0);
+  } catch(e){}
 }
 
 // ---- briques de synthèse ----
