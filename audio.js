@@ -37,6 +37,9 @@ function init(){
   if (ctx){ if (ctx.state==='suspended') ctx.resume(); return; }
   const AC = window.AudioContext || window.webkitAudioContext;
   if (!AC) return;
+  // iOS/Safari : forcer la session "playback" pour jouer même
+  // quand l'iPhone est en mode Silence (commutateur latéral orange).
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch(e){}
   ctx = new AC();
   master = ctx.createGain(); master.gain.value = muted ? 0 : 0.85;
   master.connect(ctx.destination);
