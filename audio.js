@@ -121,6 +121,51 @@ function tom(t,pitch){
   o.connect(g); g.connect(master); o.start(t); o.stop(t+0.4);
 }
 
+// ---- VOIX DIGITALE à formants (style S.A.M. / Amiga / Atari) ----
+// Chaque phonème = {f:[F1,F2,F3], v:voisé, n:bruit, a:ampli, d:durée(s)}.
+function speak(t0, phons, pitch){
+  const total = phons.reduce((s,p)=>s+p.d, 0);
+  const dest = leadBus || master;
+
+  // source voisée (dents de scie = pulse glottique) + vibrato léger
+  const vosc=ctx.createOscillator(); vosc.type='sawtooth';
+  vosc.frequency.setValueAtTime(pitch||120, t0);
+  vosc.frequency.linearRampToValueAtTime((pitch||120)*0.96, t0+total); // déclinaison
+  const vg=ctx.createGain(); vg.gain.setValueAtTime(0,t0); vosc.connect(vg);
+
+  // source bruitée (consonnes)
+  const nb=ctx.createBufferSource();
+  const buf=ctx.createBuffer(1, Math.ceil(ctx.sampleRate*(total+0.12)), ctx.sampleRate);
+  const dd=buf.getChannelData(0); for(let i=0;i<dd.length;i++) dd[i]=Math.random()*2-1;
+  nb.buffer=buf; nb.loop=true;
+  const ng=ctx.createGain(); ng.gain.setValueAtTime(0,t0); nb.connect(ng);
+
+  // 3 formants (passe-bande)
+  const out=ctx.createGain(); out.gain.setValueAtTime(0,t0);
+  const lvl=[1.0,0.7,0.35], F=[];
+  for(let k=0;k<3;k++){
+    const bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=(k===0?7:11);
+    bp.frequency.setValueAtTime(phons[0].f[k], t0);
+    const fg=ctx.createGain(); fg.gain.value=lvl[k];
+    vg.connect(bp); ng.connect(bp); bp.connect(fg); fg.connect(out); F.push(bp);
+  }
+  const make=ctx.createGain(); make.gain.value=1.6; out.connect(make); make.connect(dest);
+
+  // déroulé temporel des phonèmes (rampes courtes = glissés "robotiques")
+  let t=t0;
+  for(const p of phons){
+    const g=Math.min(0.03, p.d*0.45);
+    for(let k=0;k<3;k++) F[k].frequency.linearRampToValueAtTime(p.f[k], t+g);
+    vg.gain.linearRampToValueAtTime(p.v, t+g);
+    ng.gain.linearRampToValueAtTime(p.n*0.6, t+g);
+    out.gain.linearRampToValueAtTime(p.a, t+g);
+    t += p.d;
+  }
+  out.gain.linearRampToValueAtTime(0.0001, t+0.05);
+  vosc.start(t0); vosc.stop(t+0.12);
+  nb.start(t0);   nb.stop(t+0.12);
+}
+
 // ============================================================
 //  DISPATCH DES VOIX -> trig(localStep, time) -> puissance
 // ============================================================
@@ -148,6 +193,9 @@ function makeTrig(v){
       else ch.forEach(x=>note(f(x+12+(v.oct||0)),t,{wave:v.wave,peak:v.peak,dur:v.dur,dest:v.dest||'lead'}));
       return v.p||1.0; };
   }
+  if(v.k==='speak'){
+    return (s,t)=>{ if(!has(v.steps,s)) return 0; speak(t, v.phon, v.pitch); return v.p||1.0; };
+  }
   return ()=>0;
 }
 
@@ -162,6 +210,51 @@ const P_ICE   =[[0,3,7,14],[3,7,10,14],[-4,0,3,7],[-2,2,5,7]]; // Am9 Cmaj7 Fmaj
 const P_ACID  =[[0,3,7],[0,3,7],[0,3,7],[0,3,7]];              // drone Am
 const P_SUN   =[[3,7,10,14],[0,3,7,10],[5,8,12,15],[-2,2,5,8]];// Cmaj7 Am7 Dm7 G7
 const P_DEEP  =[[0,3,7],[1,5,8],[0,3,7],[-2,1,5]];             // Am Bb Am Gm (phrygien)
+
+// ---- phonèmes français (constructeurs + table) ----
+const V =(a,b,c,d=0.14)=>({f:[a,b,c],v:1,  n:0,   a:0.95,d});  // voyelle
+const NC=(a,b,c,d=0.09)=>({f:[a,b,c],v:0.85,n:0,  a:0.7, d});  // nasale / liquide voisée
+const FR=(a,b,c,d=0.11,amp=0.5)=>({f:[a,b,c],v:0,n:1,a:amp,d});// fricative sourde
+const VF=(a,b,c,d=0.10)=>({f:[a,b,c],v:0.5,n:0.6, a:0.55,d}); // fricative voisée
+const GAP=(d=0.035)=>({f:[500,1500,2500],v:0,n:0,a:0.0001,d});
+const BR=(a,b,c,d=0.025,amp=0.45)=>({f:[a,b,c],v:0,n:1,a:amp,d}); // burst (plosive sourde)
+const VS=(a,b,c,d=0.05)=>({f:[a,b,c],v:0.9,n:0,a:0.8,d});       // corps de plosive voisée
+
+const MP = {
+  // voyelles
+  'a':V(800,1300,2600), 'e':V(400,2200,2700), 'E':V(600,1700,2500),
+  'i':V(320,2300,3000), 'o':V(450,800,2600),  'O':V(600,1000,2600),
+  'u':V(350,700,2600),  'y':V(320,1700,2400), '2':V(420,1500,2400),
+  '@':V(500,1500,2500),
+  'a~':V(650,1100,2600), 'o~':V(500,900,2600), 'e~':V(560,1800,2600),
+  // semi-voyelles
+  'j':V(320,2300,3000,0.05), 'w':V(350,800,2600,0.05), 'H':V(320,1700,2400,0.05),
+  // consonnes voisées / liquides / nasales
+  'm':NC(250,1100,2400), 'n':NC(250,1700,2600), 'l':({f:[350,1200,2700],v:0.95,n:0,a:0.8,d:0.07}),
+  'r':({f:[500,1300,2400],v:0.6,n:0.35,a:0.6,d:0.08}),
+  // fricatives
+  's':FR(4000,6500,8000,0.12), 'f':FR(1200,2200,4000,0.11,0.45),
+  'S':FR(1800,2600,3600,0.12), 'z':VF(300,4500,6000), 'Z':VF(250,2400,3400), 'v':VF(300,1200,2400),
+  // plosives (gap + burst/corps)
+  'p':[GAP(),BR(600,1200,2000)],   't':[GAP(),BR(3000,4500,6000,0.02)], 'k':[GAP(),BR(1500,2200,3000)],
+  'b':[GAP(0.03),VS(300,900,2400)],'d':[GAP(0.03),VS(300,1700,2600)],   'g':[GAP(0.03),VS(300,1300,2300)],
+};
+// "b o~ Z u r" -> tableau de phonèmes (aplati)
+const word = str => str.trim().split(/\s+/).flatMap(k => { const m=MP[k]; return m?(Array.isArray(m)?m:[m]):[]; });
+
+const VOX_STEPS=[0,2,4,6,8,10,12,14];   // un mot par temps quand plusieurs actifs
+const VOX_COLORS=['#ffcf6b','#ffd87a','#ffc24d','#ffe08a','#ffb84d','#ffdd99','#ffca5e','#ffe6a8'];
+// 8 mots de DÉMO (à remplacer par ta liste) + leur transcription phonétique
+const VOX_WORDS=[
+  {label:'BONJOUR',  ph:'b o~ Z u r',   pitch:118},
+  {label:'MAUPITI',  ph:'m o p i t i',  pitch:128},
+  {label:'DANGER',   ph:'d a~ Z e',     pitch:104},
+  {label:'MYSTERE',  ph:'m i s t E r',  pitch:122},
+  {label:'ECOUTE',   ph:'e k u t',      pitch:134},
+  {label:'ATTENTION',ph:'a t a~ s j o~',pitch:112},
+  {label:'VOILA',    ph:'v w a l a',    pitch:126},
+  {label:'MERCI',    ph:'m E r s i',    pitch:108},
+];
 
 const SLIDES = [
   // ============ 0 · ORIGIN — chiptune entraînant (La mineur) ============
@@ -223,6 +316,11 @@ const SLIDES = [
     {role:'FIFTH',color:'#b39bff', k:'seq', wave:'sine', peak:0.26, dur:2.0, notes:seq('E2 . . . . . . . E2 . . . . . . .')},
     {role:'SPARK',color:'#6f7bff', k:'seq', wave:'sine', peak:0.16, dur:0.8, dest:'lead', notes:seq('. . . . . . . . . . . . E6 . . .')},
   ]},
+
+  // ============ 5 · VOX — voix digitales à formants (style Amiga/SAM) ============
+  { name:'VOX', accent:'#ffcf6b', voices: VOX_WORDS.map((w,i)=>(
+    { role:w.label, color:VOX_COLORS[i], k:'speak', steps:[VOX_STEPS[i]], phon:word(w.ph), pitch:w.pitch }
+  )) },
 ];
 
 // ---- aplatissement -> 40 instruments ----

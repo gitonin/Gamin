@@ -14,6 +14,7 @@ Un **module de musique synthétiseur** tactile, esthétique **Tron / filaire né
   - **ACID** — techno acide, basse 303 glissée, kick four-on-the-floor
   - **SUNSET** — lo-fi chaud & jazzy (Do majeur, Rhodes)
   - **DEEP** — drone cinématique sombre (mode phrygien, sub-grave)
+  - **VOX** — **voix digitales** synthétisées par code (formants, style Amiga / Atari / S.A.M.) : 8 mots/phrases déclenchés au tap, calés sur le tempo
 - À chaque émission : **ondes colorées** + **explosions de pixels fins**.
 
 ## Utilisation
